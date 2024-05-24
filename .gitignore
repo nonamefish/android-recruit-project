@@ -12,3 +12,7 @@
 .externalNativeBuild
 .cxx
 local.properties
+
+# for macOS
+**/.DS_Store
+
