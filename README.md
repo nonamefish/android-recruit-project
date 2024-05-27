@@ -69,10 +69,16 @@
             - 「必修」→ 紅色
             - 「選修」→ 默認顏色
     - 其餘的場合 → 顯示「無期限」，並且文字顏色為默認顏色
+
+- 右下角 more icon
+    - 顯示但可以不用實作點擊功能
+
 - 提示
     - 不用在意卡片尺寸、顏色、間距等細節，請將重點放在如何排版。（你仍然可以盡量符合示意圖）
 
-<img width="300" alt="CleanShot 2021-12-09 at 10 59 30@2x" src="https://github.com/hahow/android-recruit-project/assets/15129081/70ad7c8d-5298-4506-a7ab-1cfdf6fc9ed9">
+- 示意圖
+
+    <img width="300" alt="CleanShot 2021-12-09 at 10 59 30@2x" src="https://github.com/hahow/android-recruit-project/assets/15129081/70ad7c8d-5298-4506-a7ab-1cfdf6fc9ed9">
 
 ## 提交
 
