@@ -1,4 +1,4 @@
-package `in`.hahow.android_recruit_project
+package `in`.hahow.androidRecruitProject
 
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
