@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "in.hahow.androidRecruitProject"
+    namespace = "com.hahow.androidRecruitProject"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "in.hahow.androidRecruitProject"
+        applicationId = "com.hahow.androidRecruitProject"
         minSdk = 21
         targetSdk = 34
         versionCode = 1
