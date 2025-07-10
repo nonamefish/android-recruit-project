@@ -8,11 +8,12 @@ class MyApplication: Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        appContext = applicationContext
     }
 
     companion object {
         lateinit var instance: Application
-        val appContext: Context = instance.applicationContext
+        lateinit var appContext: Context
             private set
     }
 }

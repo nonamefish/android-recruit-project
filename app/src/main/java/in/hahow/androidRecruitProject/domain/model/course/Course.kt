@@ -1,6 +1,7 @@
 package `in`.hahow.androidRecruitProject.domain.model.course
 
-import `in`.hahow.androidRecruitProject.data.model.Assignment
+import `in`.hahow.androidRecruitProject.domain.model.assignment.Assignment
+
 
 data class Course(
     val id: String,
