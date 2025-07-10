@@ -12,11 +12,3 @@ plugins {
     alias(libs.plugins.androidApplication) apply false
     alias(libs.plugins.kotlinAndroid) apply false
 }
-
-/***
- * Android Gradle Plugin 已經內建了 clean task，不需要再定義 clean task
- *
- * tasks.register<Delete>("clean") {
- *     delete(rootProject.buildDir)
- * }
- */
