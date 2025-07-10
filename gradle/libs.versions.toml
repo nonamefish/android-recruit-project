@@ -4,11 +4,11 @@ kotlin = "1.9.20"
 gradle = "8.3.2"
 core-ktx = "1.13.1"
 appcompat = "1.7.0"
-material = "1.13.0-alpha14"
+material3 = "1.2.1"
 compose-bom = "2024.05.00"
 activity-compose = "1.9.0"
 compose-ui = "1.6.7"
-compose-material = "1.6.7"
+compose-material3 = "1.2.1"
 compose-ui-tooling-preview = "1.6.7"
 compose-ui-tooling = "1.6.7"
 compose-ui-test-junit4 = "1.6.7"
@@ -23,12 +23,11 @@ kotlin-gradle-plugin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", v
 
 core-ktx = { module = "androidx.core:core-ktx", version.ref = "core-ktx" }
 appcompat = { module = "androidx.appcompat:appcompat", version.ref = "appcompat" }
-material = { module = "com.google.android.material:material", version.ref = "material" }
 
 compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
 activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activity-compose" }
 compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
-compose-material = { module = "androidx.compose.material:material", version.ref = "compose-material" }
+compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui-tooling-preview" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui-tooling" }
 

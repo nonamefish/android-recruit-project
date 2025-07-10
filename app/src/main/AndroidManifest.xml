@@ -9,7 +9,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Androidrecruitproject">
         <activity
-            android:name=".CourseActivity"
+            android:name=".ui.course.CourseActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
