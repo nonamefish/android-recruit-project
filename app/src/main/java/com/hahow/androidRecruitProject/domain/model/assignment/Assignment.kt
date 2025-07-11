@@ -4,7 +4,7 @@ data class Assignment(
     val id: String,
     val title: String?,
     val assigners: List<Assigner>?,
-    val rule: String?,
+    val rule: Rule?,
     val completedAt: String?,
     val timeline: AssignmentTimeline?
 )

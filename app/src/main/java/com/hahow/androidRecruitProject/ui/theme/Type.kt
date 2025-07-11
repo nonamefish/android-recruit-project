@@ -14,12 +14,19 @@ object HahowTypography {
 
     val heading01: TextStyle
         @Composable get() = TextStyle(
-            fontSize = 12.sp,
+            fontSize = 20.sp,
             fontWeight = FontWeight(600),
             textAlign = TextAlign.Center
         )
 
     val subtitle01: TextStyle
+        @Composable get() = TextStyle(
+            fontSize = 14.sp,
+            fontWeight = FontWeight(600),
+            textAlign = TextAlign.Center
+        )
+
+    val subtitle02: TextStyle
         @Composable get() = TextStyle(
             fontSize = 12.sp,
             fontWeight = FontWeight(600),
@@ -29,7 +36,12 @@ object HahowTypography {
     val body01: TextStyle
         @Composable get() = TextStyle(
             fontSize = 12.sp,
-            fontWeight = FontWeight(600),
+            textAlign = TextAlign.Center
+        )
+
+    val body02: TextStyle
+        @Composable get() = TextStyle(
+            fontSize = 10.sp,
             textAlign = TextAlign.Center
         )
 }

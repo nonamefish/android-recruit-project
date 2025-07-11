@@ -1,24 +1,20 @@
 package com.hahow.androidRecruitProject.ui.course
 
-import android.util.Log
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.hahow.androidRecruitProject.data.repository.DefaultCourseRepository
-import com.hahow.androidRecruitProject.domain.model.course.Course
 import com.hahow.androidRecruitProject.ui.base.BaseViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CourseViewModel(
     private val repo: DefaultCourseRepository,
 ) : BaseViewModel() {
 
-    val uiState by lazy {
-        CourseUiState(
-            courses = courses
-        )
-    }
-
-    private val courses = mutableStateOf<List<Course>>(emptyList())
+    private val _uiState = MutableStateFlow(CourseUiState(loadingState = LoadingState.Idle))
+    val uiState: StateFlow<CourseUiState> = _uiState.asStateFlow()
 
     fun onUiAction(action: CourseUiAction) {
         when (action) {
@@ -26,10 +22,18 @@ class CourseViewModel(
         }
     }
 
+
     fun getCourses() {
+        _uiState.update { it.copy(loadingState = LoadingState.Loading) }
+
         viewModelScope.launch {
-            courses.value = repo.getCourses()
-            Log.d("CourseViewModel", "Courses loaded: ${courses.value.size}")
+            val courses = repo.getCourses()
+            _uiState.update {
+                it.copy(
+                    courses = courses,
+                    loadingState = LoadingState.Idle,
+                )
+            }
         }
     }
 }

@@ -12,19 +12,25 @@ import androidx.compose.ui.graphics.Color
  * background 屬性會根據當前主題（淺色或深色）返回對應的背景顏色
  */
 object HahowColor {
-    val green_500 = Color(0xff0D331C)
-    val green_300 = Color(0xff0D331C)
-    val white_100 = Color(0xffFFFFFF)
-    val gray_100 = Color(0xff121212)
-    val red_900 = Color(0xffB01D2D)
+    val green_800 = Color(0xff0d331c)
+    val green_700 = Color(0xff2d5a5a)
+    val green_500 = Color(0xff00c6b3)
+    val green_300 = Color(0xfff0f8f8)
+    val white_100 = Color(0xffffffff)
+    val gray_900 = Color(0xff1e201f)
+    val gray_800 = Color(0xff757575)
+    val gray_500 = Color(0xffa5a6a5)
+    val gray_300 = Color(0xffe8e8e8)
+    val red_900 = Color(0xffDA3F48)
+    val black_100 = Color(0xff000000)
 
     val background
-        @Composable get() = getColor(white_100, gray_100)
+        @Composable get() = getColor(white_100, gray_900)
 }
 
 val LightColorScheme = lightColorScheme(
-    primary = HahowColor.green_500,
-    secondary = HahowColor.green_500,
+    primary = HahowColor.green_800,
+    secondary = HahowColor.green_800,
     error = HahowColor.red_900,
     background = Color.White,
     surface = Color.White
@@ -34,8 +40,8 @@ val DarkColorScheme = darkColorScheme(
     primary = HahowColor.green_300,
     secondary = HahowColor.green_300,
     error = HahowColor.red_900,
-    background = HahowColor.gray_100,
-    surface = HahowColor.gray_100
+    background = HahowColor.gray_900,
+    surface = HahowColor.gray_900
 )
 
 @Composable
