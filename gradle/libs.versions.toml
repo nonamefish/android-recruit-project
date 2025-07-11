@@ -19,6 +19,8 @@ ksp = "1.9.20-1.0.14"
 junit4 = "4.13.2"
 androidx-junit = "1.1.5"
 espresso-core = "3.5.1"
+lifecycle-runtime-compose = "2.6.2"
+glide-compose = "1.0.0-alpha.1"
 
 [libraries]
 gradle = { module = "com.android.tools.build:gradle", version.ref = "gradle" }
@@ -35,6 +37,8 @@ compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose-ui" }
 compose-material3 = { module = "androidx.compose.material3:material3", version.ref = "compose-material3" }
 compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose-ui-tooling-preview" }
 compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose-ui-tooling" }
+lifecycle-runtime-compose = { module = "androidx.lifecycle:lifecycle-runtime-compose", version.ref = "lifecycle-runtime-compose" }
+glide-compose = { module = "com.github.bumptech.glide:compose", version.ref = "glide-compose" }
 
 koin-core = { module = "io.insert-koin:koin-core", version.ref = "koinAndroid" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }

@@ -57,12 +57,16 @@ dependencies {
     implementation(libs.compose.ui)
     implementation(libs.compose.material3)
     implementation(libs.compose.ui.tooling.preview)
+    implementation(libs.lifecycle.runtime.compose)
 
     // koin
     implementation(libs.koin.android)
     implementation(libs.koin.annotations)
     implementation(libs.koin.core)
     ksp(libs.koin.compiler)
+
+    // Glide-Compose
+    implementation(libs.glide.compose)
 
     debugImplementation(libs.compose.ui.tooling)
     testImplementation(libs.junit4)
