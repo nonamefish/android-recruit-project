@@ -1,5 +1,6 @@
 package com.hahow.androidRecruitProject.ui.course.widget
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.InlineTextContent
@@ -50,11 +52,13 @@ import com.hahow.androidRecruitProject.ui.theme.HahowTypography
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
-fun Course(
+fun CourseItemScreen(
     course: CourseUiItem,
     modifier: Modifier = Modifier
 ) {
-    Row(modifier = Modifier.padding(12.dp)) {
+    Row(
+        modifier = Modifier.padding(12.dp)
+    ) {
 
         Box {
 
@@ -129,7 +133,7 @@ fun Course(
                 Image(
                     painter = painterResource(id = R.drawable.ic_more),
                     contentDescription = stringResource(id = R.string.course_more_icon_desc),
-                    colorFilter = ColorFilter.tint(HahowColor.gray_500),
+                    colorFilter = ColorFilter.tint(HahowColor.hahow_gray_500),
                     modifier = Modifier.size(20.dp)
                 )
             }
@@ -152,14 +156,14 @@ fun PassedDate(studiedDateText: String) {
         Text(
             studiedDateText,
             style = HahowTypography.body01,
-            color = HahowColor.green_500
+            color = HahowColor.hahow_green_500
         )
     }
 }
 
 @Composable
 fun DeadLine(deadlineText: String, isCompulsory: Boolean) {
-    val color = if (isCompulsory) HahowColor.red_900 else HahowColor.gray_500
+    val color = if (isCompulsory) HahowColor.hahow_red_900 else HahowColor.hahow_gray_500
 
     Row(
         verticalAlignment = Alignment.CenterVertically
@@ -199,6 +203,7 @@ fun Title(title: String, titleBadgeText: String?, isCompulsory: Boolean) {
             style = HahowTypography.subtitle01,
             maxLines = 2,
             textAlign = TextAlign.Start,
+            color = HahowColor.hahow_black_100,
             overflow = TextOverflow.Ellipsis,
             softWrap = true,
         )
@@ -225,14 +230,14 @@ private fun TitleBadge(titleBadgeText: String, isCompulsory: Boolean) {
     Box(
         modifier = Modifier
             .background(
-                color = if (isCompulsory) HahowColor.green_300 else HahowColor.gray_300,
+                color = if (isCompulsory) HahowColor.hahow_green_300 else HahowColor.hahow_gray_300,
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(vertical = 2.dp, horizontal = 8.dp)
     ) {
         Text(
             titleBadgeText,
-            color = if (isCompulsory) HahowColor.green_500 else HahowColor.gray_800,
+            color = if (isCompulsory) HahowColor.hahow_green_500 else HahowColor.hahow_gray_800,
             style = HahowTypography.body01
         )
     }
@@ -249,11 +254,11 @@ private fun ImageTag(
         modifier = modifier
             .background(
                 if (tagType == TagType.Assigner) {
-                    HahowColor.green_800
+                    HahowColor.hahow_green_800
                 } else {
                     HahowColor.black_100.copy(alpha = 0.3f)
                 },
-                RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp)
+                RoundedCornerShape(topStart = 4.dp)
             )
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
@@ -273,7 +278,7 @@ private fun ImageBadge(typeTagText: String) {
         Box(
             modifier = Modifier
                 .background(
-                    HahowColor.blue_700,
+                    HahowColor.hahow_blue_700,
                     RoundedCornerShape(4.dp, 4.dp, 4.dp, 0.dp)
                 )
                 .padding(horizontal = 8.dp, vertical = 4.dp)
@@ -284,6 +289,8 @@ private fun ImageBadge(typeTagText: String) {
                 style = HahowTypography.subtitle02
             )
         }
+
+        val triangleColor = HahowColor.hahow_blue_900
         Canvas(
             modifier = Modifier
                 .width(4.dp)
@@ -297,7 +304,7 @@ private fun ImageBadge(typeTagText: String) {
             }
             drawPath(
                 path = path,
-                color = HahowColor.blue_900
+                color = triangleColor
             )
         }
     }
@@ -316,7 +323,7 @@ private fun CourseProgressBar(
         Text(
             text = progressBarText,
             style = HahowTypography.body01,
-            color = HahowColor.gray_500,
+            color = HahowColor.hahow_gray_500,
         )
 
         Spacer(modifier = Modifier.width(4.dp))
@@ -328,7 +335,7 @@ private fun CourseProgressBar(
         ) {
             Spacer(
                 modifier = Modifier
-                    .background(HahowColor.gray_300, RoundedCornerShape(4.dp))
+                    .background(HahowColor.hahow_gray_300, RoundedCornerShape(4.dp))
                     .fillMaxWidth()
                     .fillMaxHeight()
             )
@@ -336,7 +343,7 @@ private fun CourseProgressBar(
                 modifier = Modifier
                     .background(
                         brush = Brush.horizontalGradient(
-                            colors = listOf(HahowColor.green_700, HahowColor.green_500)
+                            colors = listOf(HahowColor.hahow_green_700, HahowColor.hahow_green_500)
                         ),
                         shape = RoundedCornerShape(4.dp)
                     )
@@ -348,7 +355,8 @@ private fun CourseProgressBar(
 }
 
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Normal - Light")
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Normal - Dark")
 @Composable
 fun PreviewCompulsoryCourse() {
     val sampleCourse = CourseUiItem(
@@ -365,10 +373,11 @@ fun PreviewCompulsoryCourse() {
         imageTagText = "Daisuke 指派",
         titleBadgeText = "必修"
     )
-    Course(sampleCourse)
+    CourseItemScreen(sampleCourse)
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Normal - Light")
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Normal - Dark")
 @Composable
 fun PreviewElectiveCourse() {
     val sampleCourse = CourseUiItem(
@@ -385,10 +394,11 @@ fun PreviewElectiveCourse() {
         imageTagText = "Daisuke 指派",
         titleBadgeText = "推薦"
     )
-    Course(sampleCourse)
+    CourseItemScreen(sampleCourse)
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, name = "Normal - Light")
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Normal - Dark")
 @Composable
 fun PreviewNormalCourse() {
     val sampleCourse = CourseUiItem(
@@ -405,5 +415,5 @@ fun PreviewNormalCourse() {
         imageTagText = "3 天前觀看",
         titleBadgeText = null
     )
-    Course(sampleCourse)
+    CourseItemScreen(sampleCourse)
 }
