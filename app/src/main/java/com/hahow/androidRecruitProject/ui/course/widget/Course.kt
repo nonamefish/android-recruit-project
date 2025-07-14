@@ -43,23 +43,15 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hahow.androidRecruitProject.R
-import com.hahow.androidRecruitProject.domain.model.assignment.Assigner
-import com.hahow.androidRecruitProject.domain.model.assignment.Assignment
-import com.hahow.androidRecruitProject.domain.model.assignment.AssignmentTimeline
-import com.hahow.androidRecruitProject.domain.model.assignment.Rule
-import com.hahow.androidRecruitProject.domain.model.course.Course
-import com.hahow.androidRecruitProject.domain.model.course.CourseSource
-import com.hahow.androidRecruitProject.domain.model.course.Teacher
+import com.hahow.androidRecruitProject.ui.course.CourseUiItem
+import com.hahow.androidRecruitProject.ui.course.TagType
 import com.hahow.androidRecruitProject.ui.theme.HahowColor
 import com.hahow.androidRecruitProject.ui.theme.HahowTypography
-import com.hahow.androidRecruitProject.util.DateUtil
-import kotlin.math.abs
-import kotlin.math.roundToInt
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Course(
-    course: Course,
+    course: CourseUiItem,
     modifier: Modifier = Modifier
 ) {
     Row(modifier = Modifier.padding(12.dp)) {
@@ -70,6 +62,7 @@ fun Course(
                 modifier = modifier.clip(RoundedCornerShape(8.dp)),
                 shape = RoundedCornerShape(8.dp),
             ) {
+
                 Box(
                     modifier = Modifier
                         .width(120.dp)
@@ -84,26 +77,30 @@ fun Course(
                             .clip(RoundedCornerShape(8.dp))
                     )
 
-                    CourseInfoTag(
-                        modifier = Modifier.align(Alignment.BottomEnd),
-                        course = course
-                    )
+                    if (course.imageTagText != null) {
+                        ImageTag(
+                            modifier = Modifier.align(Alignment.BottomEnd),
+                            tagText = course.imageTagText,
+                            tagType = course.imageTagType
+                        )
+                    }
                 }
             }
 
-            CourseTypeTag(course.source)
+            if (course.imageBadgeText != null) {
+                ImageBadge(course.imageBadgeText)
+            }
         }
-
         Spacer(modifier = Modifier.width(12.dp))
 
         Column(
             modifier = Modifier.weight(1f),
             horizontalAlignment = Alignment.Start
         ) {
-
             Title(
                 title = course.title,
-                rule = course.recentStartedAssignment?.rule
+                titleBadgeText = course.titleBadgeText,
+                isCompulsory = course.isCompulsory
             )
 
             Spacer(modifier = Modifier.height(4.dp))
@@ -112,21 +109,23 @@ fun Course(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(4.dp)
             ) {
-
-                PassedDate(course.studiedAt)
+                if (course.studiedDateText != null) {
+                    PassedDate(course.studiedDateText)
+                }
 
                 CourseProgressBar(
                     modifier = Modifier.weight(1f),
-                    completionPercentage = course.completionPercentage
+                    progressBarText = course.progressBarText,
+                    progressPercent = course.progressPercent
                 )
 
-                DeadLine(
-                    studiedAt = course.studiedAt,
-                    dueAt = course.recentStartedAssignment?.timeline?.dueAt,
-                    rule = course.recentStartedAssignment?.rule
-                )
+                if (course.deadlineText != null) {
+                    DeadLine(
+                        deadlineText = course.deadlineText,
+                        isCompulsory = course.isCompulsory
+                    )
+                }
 
-                // more icon
                 Image(
                     painter = painterResource(id = R.drawable.ic_more),
                     contentDescription = stringResource(id = R.string.course_more_icon_desc),
@@ -134,18 +133,12 @@ fun Course(
                     modifier = Modifier.size(20.dp)
                 )
             }
-
         }
-
     }
 }
 
-
 @Composable
-fun PassedDate(studiedAt: String?) {
-    if (studiedAt == null) return
-
-    val date = DateUtil.extractDateFromIso(studiedAt)
+fun PassedDate(studiedDateText: String) {
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -157,7 +150,7 @@ fun PassedDate(studiedAt: String?) {
                 .padding(end = 2.dp)
         )
         Text(
-            "$date ${stringResource(id = R.string.course_passed)}",
+            studiedDateText,
             style = HahowTypography.body01,
             color = HahowColor.green_500
         )
@@ -165,16 +158,12 @@ fun PassedDate(studiedAt: String?) {
 }
 
 @Composable
-fun DeadLine(studiedAt: String?, dueAt: String?, rule: Rule?) {
-    if (studiedAt != null) return
-
-    val isCompulsory = rule == Rule.COMPULSORY
+fun DeadLine(deadlineText: String, isCompulsory: Boolean) {
     val color = if (isCompulsory) HahowColor.red_900 else HahowColor.gray_500
+
     Row(
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val deadlineText = getDeadlineText(dueAt)
-
         Image(
             painter = painterResource(id = R.drawable.ic_clock),
             contentDescription = stringResource(id = R.string.course_deadline_icon_desc),
@@ -183,41 +172,24 @@ fun DeadLine(studiedAt: String?, dueAt: String?, rule: Rule?) {
                 .size(16.dp)
                 .padding(end = 2.dp)
         )
-
         Text(deadlineText, style = HahowTypography.body01, color = color)
     }
 }
 
 @Composable
-fun Title(title: String, rule: Rule?) {
+fun Title(title: String, titleBadgeText: String?, isCompulsory: Boolean) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        // 動態建立 annotatedString 與 inlineContent
-        val (annotatedString, inlineContent) = if (rule != null) {
+        val (annotatedString, inlineContent) = if (titleBadgeText != null) {
             val tagId = "tag"
-
-            val text = buildAnnotatedString {
-                appendInlineContent(tagId, "[tag]") // 這個 [tag] 是 placeholder，不會顯示
+            val annotatedTitle = buildAnnotatedString {
+                appendInlineContent(tagId, "[tag]")
                 append(title)
             }
-
             val inline = mapOf(
-                tagId to InlineTextContent(
-                    Placeholder(
-                        width = 42.sp,
-                        height = 22.sp,
-                        placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
-                    )
-                ) {
-                    TagText(
-                        modifier = Modifier,
-                        rule = rule
-                    )
-                }
+                tagId to titleBadgeInlineContent(titleBadgeText, isCompulsory)
             )
-
-            text to inline
+            annotatedTitle to inline
         } else {
-            // 沒有 rule，直接使用 title，沒有 inlineContent
             buildAnnotatedString { append(title) } to emptyMap()
         }
 
@@ -234,61 +206,55 @@ fun Title(title: String, rule: Rule?) {
 }
 
 @Composable
-private fun TagText(modifier: Modifier, rule: Rule) {
-    val isCompulsory = rule == Rule.COMPULSORY
+fun titleBadgeInlineContent(titleBadgeText: String, isCompulsory: Boolean): InlineTextContent =
+    InlineTextContent(
+        Placeholder(
+            width = 42.sp,
+            height = 22.sp,
+            placeholderVerticalAlign = PlaceholderVerticalAlign.TextCenter
+        )
+    ) {
+        TitleBadge(
+            titleBadgeText = titleBadgeText,
+            isCompulsory = isCompulsory
+        )
+    }
+
+@Composable
+private fun TitleBadge(titleBadgeText: String, isCompulsory: Boolean) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .background(
-                color = if (isCompulsory) {
-                    HahowColor.green_300
-                } else {
-                    HahowColor.gray_300
-                },
+                color = if (isCompulsory) HahowColor.green_300 else HahowColor.gray_300,
                 shape = RoundedCornerShape(16.dp)
             )
             .padding(vertical = 2.dp, horizontal = 8.dp)
     ) {
         Text(
-            if (isCompulsory) stringResource(id = R.string.course_rule_compulsory) else stringResource(
-                id = R.string.course_rule_elective
-            ),
-            color = if (isCompulsory) {
-                HahowColor.green_500
-            } else {
-                HahowColor.gray_800
-            },
+            titleBadgeText,
+            color = if (isCompulsory) HahowColor.green_500 else HahowColor.gray_800,
             style = HahowTypography.body01
         )
     }
 }
 
 @Composable
-private fun CourseInfoTag(
+private fun ImageTag(
     modifier: Modifier,
-    course: Course
+    tagText: String,
+    tagType: TagType?
 ) {
-    val assignerName = course.recentStartedAssignment?.assigners?.firstOrNull()?.name
-    val tagText: String?
-    val backgroundColor: Color
-
-    when {
-        assignerName != null -> {
-            tagText = "$assignerName ${stringResource(id = R.string.course_assigner_tag)}"
-            backgroundColor = HahowColor.green_700
-        }
-
-        course.lastViewedAt != null -> {
-            val daysAgo = abs(DateUtil.daysFromNow(course.lastViewedAt))
-            tagText = "$daysAgo ${stringResource(id = R.string.course_last_viewed_tag)}"
-            backgroundColor = HahowColor.black_100.copy(alpha = 0.3f)
-        }
-
-        else -> return
-    }
-
+    if (tagType == null) return
     Box(
         modifier = modifier
-            .background(backgroundColor, RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp))
+            .background(
+                if (tagType == TagType.Assigner) {
+                    HahowColor.green_800
+                } else {
+                    HahowColor.black_100.copy(alpha = 0.3f)
+                },
+                RoundedCornerShape(topStart = 4.dp, bottomStart = 4.dp)
+            )
             .padding(horizontal = 8.dp, vertical = 4.dp)
     ) {
         Text(
@@ -300,41 +266,39 @@ private fun CourseInfoTag(
 }
 
 @Composable
-private fun CourseTypeTag(source: CourseSource?) {
-    if (source == CourseSource.TENANT_COURSE) {
-        Column(
-            modifier = Modifier.offset(x = (-4).dp, y = 4.dp)
+private fun ImageBadge(typeTagText: String) {
+    Column(
+        modifier = Modifier.offset(x = (-4).dp, y = 4.dp)
+    ) {
+        Box(
+            modifier = Modifier
+                .background(
+                    HahowColor.blue_700,
+                    RoundedCornerShape(4.dp, 4.dp, 4.dp, 0.dp)
+                )
+                .padding(horizontal = 8.dp, vertical = 4.dp)
         ) {
-            Box(
-                modifier = Modifier
-                    .background(
-                        HahowColor.blue_700,
-                        RoundedCornerShape(4.dp, 4.dp, 4.dp, 0.dp)
-                    )
-                    .padding(horizontal = 8.dp, vertical = 4.dp)
-            ) {
-                Text(
-                    stringResource(id = R.string.course_type_tenant),
-                    color = Color.White,
-                    style = HahowTypography.subtitle02
-                )
+            Text(
+                typeTagText,
+                color = Color.White,
+                style = HahowTypography.subtitle02
+            )
+        }
+        Canvas(
+            modifier = Modifier
+                .width(4.dp)
+                .height(4.dp)
+        ) {
+            val path = Path().apply {
+                moveTo(0f, 0f)
+                lineTo(size.width, 0f)
+                lineTo(size.width, size.height)
+                close()
             }
-            Canvas(
-                modifier = Modifier
-                    .width(4.dp)
-                    .height(4.dp)
-            ) {
-                val path = Path().apply {
-                    moveTo(0f, 0f)
-                    lineTo(size.width, 0f)
-                    lineTo(size.width, size.height)
-                    close()
-                }
-                drawPath(
-                    path = path,
-                    color = HahowColor.blue_900
-                )
-            }
+            drawPath(
+                path = path,
+                color = HahowColor.blue_900
+            )
         }
     }
 }
@@ -342,15 +306,21 @@ private fun CourseTypeTag(source: CourseSource?) {
 @Composable
 private fun CourseProgressBar(
     modifier: Modifier,
-    completionPercentage: Float?
+    progressBarText: String,
+    progressPercent: Int
 ) {
-    Row(modifier) {
-        val percent = ((completionPercentage ?: 0f) * 100f).roundToInt()
+    Row(
+        modifier = modifier,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Text(
-            text = "$percent%",
+            text = progressBarText,
             style = HahowTypography.body01,
             color = HahowColor.gray_500,
         )
+
+        Spacer(modifier = Modifier.width(4.dp))
+
         Box(
             modifier = Modifier
                 .height(4.dp)
@@ -370,25 +340,10 @@ private fun CourseProgressBar(
                         ),
                         shape = RoundedCornerShape(4.dp)
                     )
-                    .fillMaxWidth(completionPercentage ?: 0f)
+                    .fillMaxWidth(progressPercent / 100f)
                     .fillMaxHeight()
             )
         }
-    }
-
-}
-
-
-@Composable
-private fun getDeadlineText(dueAt: String?): String {
-    if (dueAt.isNullOrBlank()) return "無期限"
-
-    val days = DateUtil.daysFromNow(dueAt)
-    return when {
-        days < 0L -> stringResource(id = R.string.course_deadline_overdue)
-        days == 0L -> stringResource(id = R.string.course_deadline_within_one_day)
-        days in 1..7 -> stringResource(id = R.string.course_deadline_days_left, days)
-        else -> "${DateUtil.extractDateFromIso(dueAt)} ${stringResource(id = R.string.course_deadline_end)}"
     }
 }
 
@@ -396,33 +351,19 @@ private fun getDeadlineText(dueAt: String?): String {
 @Preview(showBackground = true)
 @Composable
 fun PreviewCompulsoryCourse() {
-    val sampleCourse = Course(
+    val sampleCourse = CourseUiItem(
         id = "1",
         title = "百萬 YouTuber 攻心剪輯術：後製技巧與 YouTube 經營心法",
         coverImageUrl = "https://example.com/image.jpg",
-        totalSeconds = 3600,
-        enrollmentsCount = 100,
-        averageRating = 4.5f,
-        level = "Intermediate",
-        completionStatus = "Completed",
-        completionPercentage = 0.92f,
-        source = CourseSource.TENANT_COURSE,
-        studiedAt = "2022-02-23T10:34:04Z",
-        enrolled = true,
-        teacher = null,
-        recentStartedAssignment = Assignment(
-            id = "assignment1",
-            title = "第一週作業",
-            rule = Rule.COMPULSORY,
-            timeline = AssignmentTimeline(
-                dueAt = "2023-10-10T12:00:00Z",
-                startAt = "2023-10-01T12:00:00Z"
-            ),
-            assigners = listOf(Assigner(id = "90608", name = "Daisuke")),
-            completedAt = null
-        ),
-        lastViewedAt = "2023-10-05T12:00:00Z",
-        accessExpiredReason = null
+        progressPercent = 92,
+        studiedDateText = "2022-02-23 通過",
+        progressBarText = "92%",
+        deadlineText = null,
+        isCompulsory = true,
+        imageBadgeText = "企業課程",
+        imageTagType = TagType.Assigner,
+        imageTagText = "Daisuke 指派",
+        titleBadgeText = "必修"
     )
     Course(sampleCourse)
 }
@@ -430,33 +371,19 @@ fun PreviewCompulsoryCourse() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewElectiveCourse() {
-    val sampleCourse = Course(
-        id = "1",
+    val sampleCourse = CourseUiItem(
+        id = "2",
         title = "CEPT-B2B跨境電商技能認證-前言",
         coverImageUrl = "https://imgur.com/AIFqs1I.png",
-        totalSeconds = 1329,
-        enrollmentsCount = 3,
-        averageRating = null,
-        level = "BEGINNER",
-        completionStatus = "STUDYING",
-        completionPercentage = 0f,
-        source = CourseSource.UNLIMITED_PRODUCT,
-        studiedAt = null,
-        enrolled = true,
-        teacher = Teacher("賴順賢 Gary"),
-        recentStartedAssignment = Assignment(
-            id = "assignment1",
-            title = "test_assignment_240516_01",
-            rule = Rule.ELECTIVE,
-            timeline = AssignmentTimeline(
-                dueAt = "2024-05-19T15:59:53Z",
-                startAt = null
-            ),
-            assigners = listOf(Assigner(id = "90608", name = "Daisuke")),
-            completedAt = null
-        ),
-        lastViewedAt = null,
-        accessExpiredReason = null
+        progressPercent = 0,
+        studiedDateText = null,
+        progressBarText = "0%",
+        deadlineText = "1 天內截止",
+        isCompulsory = false,
+        imageBadgeText = null,
+        imageTagType = TagType.Assigner,
+        imageTagText = "Daisuke 指派",
+        titleBadgeText = "推薦"
     )
     Course(sampleCourse)
 }
@@ -464,23 +391,19 @@ fun PreviewElectiveCourse() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewNormalCourse() {
-    val sampleCourse = Course(
-        id = "1",
+    val sampleCourse = CourseUiItem(
+        id = "3",
         title = "不學 Coding 的邏輯思考，工程溝通更容易",
         coverImageUrl = "https://imgur.com/AIFqs1I.png",
-        totalSeconds = 1329,
-        enrollmentsCount = 3,
-        averageRating = null,
-        level = "BEGINNER",
-        completionStatus = "STUDYING",
-        completionPercentage = 0.56f,
-        source = null,
-        studiedAt = null,
-        enrolled = true,
-        teacher = Teacher("賴順賢 Gary"),
-        recentStartedAssignment = null,
-        lastViewedAt = "2024-04-16T02:14:50Z",
-        accessExpiredReason = null
+        progressPercent = 56,
+        studiedDateText = null,
+        progressBarText = "56%",
+        deadlineText = "無期限",
+        isCompulsory = false,
+        imageBadgeText = null,
+        imageTagType = TagType.LastViewed,
+        imageTagText = "3 天前觀看",
+        titleBadgeText = null
     )
     Course(sampleCourse)
 }
