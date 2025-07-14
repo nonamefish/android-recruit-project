@@ -21,7 +21,9 @@ object HahowColor {
     val gray_800 = Color(0xff757575)
     val gray_500 = Color(0xffa5a6a5)
     val gray_300 = Color(0xffe8e8e8)
-    val red_900 = Color(0xffDA3F48)
+    val red_900 = Color(0xffda3f48)
+    val blue_900 = Color(0xff12172b)
+    val blue_700 = Color(0xff1976d2)
     val black_100 = Color(0xff000000)
 
     val background
