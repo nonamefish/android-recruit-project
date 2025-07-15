@@ -15,7 +15,7 @@ object DateUtil {
     /**
      * 建立一個設定好 UTC 時區的 ISO 8601 SimpleDateFormat
      */
-    private fun createIsoFormat(): SimpleDateFormat {
+    fun createIsoFormat(): SimpleDateFormat {
         val format = SimpleDateFormat(ISO_FORMAT, Locale.getDefault())
         format.timeZone = TimeZone.getTimeZone(UTC_TIMEZONE)
         return format

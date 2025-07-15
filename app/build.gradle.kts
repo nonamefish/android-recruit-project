@@ -69,7 +69,11 @@ dependencies {
     implementation(libs.glide.compose)
 
     debugImplementation(libs.compose.ui.tooling)
+    testImplementation(libs.mockk)
+    testImplementation(libs.coroutines.test)
+    testImplementation(libs.turbine)
     testImplementation(libs.junit4)
+
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.compose.ui.test.junit4)
