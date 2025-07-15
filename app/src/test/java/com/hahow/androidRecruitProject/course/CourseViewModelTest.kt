@@ -1,5 +1,6 @@
 package com.hahow.androidRecruitProject.course
 
+import app.cash.turbine.test
 import com.hahow.androidRecruitProject.BaseTest
 import com.hahow.androidRecruitProject.data.repository.DefaultCourseRepository
 import com.hahow.androidRecruitProject.domain.model.assignment.Assigner
@@ -9,6 +10,8 @@ import com.hahow.androidRecruitProject.domain.model.assignment.Rule
 import com.hahow.androidRecruitProject.domain.model.course.Course
 import com.hahow.androidRecruitProject.domain.model.course.CourseSource
 import com.hahow.androidRecruitProject.domain.model.course.Teacher
+import com.hahow.androidRecruitProject.ui.base.BaseViewModel
+import com.hahow.androidRecruitProject.ui.course.CourseUiAction
 import com.hahow.androidRecruitProject.ui.course.CourseViewModel
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -65,7 +68,7 @@ class CourseViewModelTest : BaseTest() {
         val item = viewModel.uiState.value.courses[0]
         assertEquals(true, item.isCompulsory)
         assertEquals(true, item.titleBadgeText != null)
-        assertEquals(true, item.imageBadgeText != null)
+        assertEquals("企業課程", item.imageBadgeText)
     }
 
     @Test
@@ -87,7 +90,41 @@ class CourseViewModelTest : BaseTest() {
 
         // Then
         val item = viewModel.uiState.value.courses[0]
-        assertEquals(true, item.deadlineText != null)
+        assertEquals("2099-12-31 截止", item.deadlineText)
+    }
+
+    @Test
+    fun `onUiAction OnClickMore emits ShowToast event`() = runTest {
+        // Given
+        val courseId = "1"
+        viewModel.eventsFlow.test {
+            // When
+            viewModel.onUiAction(CourseUiAction.OnClickMore(courseId))
+            // Then
+            val event = awaitItem()
+            assert(event is BaseViewModel.Event.ShowToast)
+            assert((event as BaseViewModel.Event.ShowToast).message.contains(courseId))
+            cancelAndIgnoreRemainingEvents()
+        }
+    }
+
+    @Test
+    fun `onUiAction NavigateToCourse emits NavigateToCourse event`() = runTest {
+        // Given
+        val fakeCourses = fakeCourses
+        coEvery { repository.getCourses() } returns fakeCourses
+        viewModel.getCourses()
+        advanceUntilIdle()
+        val courseId = fakeCourses[0].id
+        viewModel.eventsFlow.test {
+            // When
+            viewModel.onUiAction(CourseUiAction.NavigateToCourse(courseId))
+            // Then
+            val event = awaitItem()
+            assert(event is CourseViewModel.CourseEvent.NavigateToCourse)
+            assert((event as CourseViewModel.CourseEvent.NavigateToCourse).course.id == courseId)
+            cancelAndIgnoreRemainingEvents()
+        }
     }
 
     val fakeCourses = listOf(

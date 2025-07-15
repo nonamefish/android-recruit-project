@@ -1,8 +1,6 @@
 package com.hahow.androidRecruitProject
 
 import io.mockk.MockKAnnotations
-import io.mockk.every
-import io.mockk.mockk
 import io.mockk.mockkObject
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -11,11 +9,16 @@ import kotlinx.coroutines.test.resetMain
 import kotlinx.coroutines.test.setMain
 import org.junit.After
 import org.junit.Before
+import org.junit.runner.RunWith
+import org.koin.core.context.stopKoin
+import org.robolectric.RobolectricTestRunner
+import org.robolectric.annotation.Config
 
 @OptIn(ExperimentalCoroutinesApi::class)
+@RunWith(RobolectricTestRunner::class)
+@Config(application = TestApplication::class)
 abstract class BaseTest {
 
-    private lateinit var testApplication: TestApplication
     internal val testDispatcher = StandardTestDispatcher()
 
     @Before
@@ -24,14 +27,17 @@ abstract class BaseTest {
         Dispatchers.setMain(testDispatcher)
         mockkObject(MyApplication)
         mockkObject(MyApplication.Companion)
-        testApplication = mockk(relaxed = true)
-        every { MyApplication.appContext } returns testApplication.applicationContext
     }
 
 
     @After
     open fun tearDown() {
         Dispatchers.resetMain()
+
+        try {
+            stopKoin()
+        } catch (e: Exception) {
+        }
     }
 
 }

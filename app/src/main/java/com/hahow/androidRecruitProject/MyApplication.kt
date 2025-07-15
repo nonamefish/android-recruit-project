@@ -2,11 +2,8 @@ package com.hahow.androidRecruitProject
 
 import android.app.Application
 import android.content.Context
-import com.hahow.androidRecruitProject.modules.DataLoaderModule
-import com.hahow.androidRecruitProject.modules.RepositoryModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
-import org.koin.ksp.generated.module
 
 open class MyApplication : Application() {
 
