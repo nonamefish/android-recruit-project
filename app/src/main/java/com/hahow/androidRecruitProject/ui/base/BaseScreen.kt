@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.hahow.androidRecruitProject.ui.component.dialog.BaseDialog
+import com.hahow.androidRecruitProject.ui.theme.HahowTheme
 
 @Composable
 fun BaseScreen(
@@ -28,6 +29,7 @@ fun BaseScreen(
                 when (event) {
                     is BaseViewModel.Event.ShowToast ->
                         Toast.makeText(content, event.message, Toast.LENGTH_SHORT).show()
+
                     else -> Unit
                 }
                 onEventCollect(event)
@@ -37,11 +39,13 @@ fun BaseScreen(
 
     val dialogUiState by viewModel.dialogUiState.collectAsStateWithLifecycle()
 
-    Box(
-        modifier = modifier,
-        contentAlignment = contentAlignment
-    ) {
-        content()
-        BaseDialog(dialogUiState)
+    HahowTheme {
+        Box(
+            modifier = modifier,
+            contentAlignment = contentAlignment
+        ) {
+            content()
+            BaseDialog(dialogUiState)
+        }
     }
 }
