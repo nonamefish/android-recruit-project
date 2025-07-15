@@ -1,9 +1,9 @@
 <resources>
     <string name="app_name">android-recruit-project</string>
     <string name="course_type_tenant">企業課程</string>
-    <string name="course_assigner_tag">指派</string>
-    <string name="course_last_viewed_tag">天前觀看</string>
-    <string name="course_passed">通過</string>
+    <string name="course_assigner_tag">%1$s 指派</string>
+    <string name="course_last_viewed_tag">%1$d 天前觀看</string>
+    <string name="course_passed">%1$s 通過</string>
     <string name="course_passed_icon_desc">通過圖示</string>
     <string name="course_deadline_icon_desc">時間圖示</string>
     <string name="course_rule_compulsory">必修</string>
@@ -14,4 +14,5 @@
     <string name="course_deadline_days_left">截止日剩 %1$d 天</string>
     <string name="course_deadline_end">%1$s 截止</string>
     <string name="course_no_expiry_date">無期限</string>
+    <string name="course_percentage">%1$d%</string>
 </resources>

@@ -3,6 +3,7 @@ package com.hahow.androidRecruitProject.ui.course
 import androidx.lifecycle.viewModelScope
 import com.hahow.androidRecruitProject.R
 import com.hahow.androidRecruitProject.data.repository.DefaultCourseRepository
+import com.hahow.androidRecruitProject.domain.model.assignment.Assigner
 import com.hahow.androidRecruitProject.domain.model.assignment.Rule
 import com.hahow.androidRecruitProject.domain.model.course.CourseSource
 import com.hahow.androidRecruitProject.ui.base.BaseViewModel
@@ -36,68 +37,29 @@ class CourseViewModel(
         viewModelScope.launch {
             val courses = repo.getCourses()
             val uiItems = courses.map { course ->
-                // Progress
-                val percent = ((course.completionPercentage ?: 0f) * 100).toInt()
-                val progressBarText = "$percent%"
 
-                // Studied date
-                val studiedDateText = course.studiedAt?.let {
-                    val date = DateUtil.extractDateFromIso(it)
-                    if (date != null) "$date 通過" else null
-                }
-
-                // Deadline
                 val dueAt = course.recentStartedAssignment?.timeline?.dueAt
-                val rule = course.recentStartedAssignment?.rule
-                val isCompulsory = rule == Rule.COMPULSORY
-
-                // Type tag
-                val imageBadgeText =
-                    if (course.source == CourseSource.TENANT_COURSE) "企業課程" else null
-
-                // Tag (assigner or last viewed)
-                val assignerName = course.recentStartedAssignment?.assigners?.firstOrNull()?.name
-                val (imageTagType, imageTagText) = when {
-                    assignerName != null -> TagType.Assigner to "$assignerName 指派"
-                    course.lastViewedAt != null -> {
-                        val daysAgo = abs(DateUtil.daysFromNow(course.lastViewedAt))
-                        TagType.LastViewed to "$daysAgo 天前觀看"
-                    }
-
-                    else -> null to ""
-                }
-
-                val days = DateUtil.daysFromNow(dueAt ?: "")
-                val deadlineText = when {
-                    course.studiedAt != null -> null
-                    dueAt.isNullOrBlank() -> "無期限"
-                    days < 0L -> "已逾期"
-                    days == 0L -> "1 天內截止"
-                    days in 1..7 -> "截止日剩 $days 天"
-                    else -> "${DateUtil.extractDateFromIso(dueAt)} 截止"
-                }
-
-                val titleBadgeText = when (rule) {
-                    Rule.COMPULSORY -> "必修"
-                    Rule.ELECTIVE -> "推薦"
-                    else -> null
-                }
-
+                val (percent, progressBarText) = getProgressData(course.completionPercentage)
+                val (imageTagType, imageTagText) = getImageTagDate(
+                    course.recentStartedAssignment?.assigners,
+                    course.lastViewedAt
+                )
                 CourseUiItem(
                     id = course.id,
                     title = course.title,
                     coverImageUrl = course.coverImageUrl,
                     progressPercent = percent,
-                    studiedDateText = studiedDateText,
                     progressBarText = progressBarText,
-                    deadlineText = deadlineText,
-                    isCompulsory = isCompulsory,
-                    imageBadgeText = imageBadgeText,
+                    studiedDateText = getStudiedDateText(course.studiedAt),
+                    deadlineText = getDeadlineText(dueAt, course.studiedAt),
+                    isCompulsory = isCompulsory(course.recentStartedAssignment?.rule),
+                    imageBadgeText = getImageBadgeText(course.source),
                     imageTagType = imageTagType,
                     imageTagText = imageTagText,
-                    titleBadgeText = titleBadgeText
+                    titleBadgeText = getTitleBadgeText(course.recentStartedAssignment?.rule)
                 )
             }
+
             _uiState.update {
                 it.copy(
                     courses = uiItems,
@@ -107,7 +69,59 @@ class CourseViewModel(
         }
     }
 
-    private fun getDeadlineText(dueAt: String?): String {
+    private fun getImageTagDate(
+        assigners: List<Assigner>?,
+        lastViewedAt: String?
+    ): Pair<TagType?, String> {
+        val assignerName = assigners?.firstOrNull()?.name
+        return when {
+            assignerName != null -> {
+                TagType.Assigner to
+                        ResourceUtil.getString(R.string.course_assigner_tag, assignerName)
+            }
+
+            lastViewedAt != null -> {
+                val daysAgo = abs(DateUtil.daysFromNow(lastViewedAt))
+                TagType.LastViewed to
+                        ResourceUtil.getString(R.string.course_last_viewed_tag, daysAgo)
+            }
+
+            else -> null to ""
+        }
+    }
+
+    private fun getStudiedDateText(studiedAt: String?): String? {
+        return if (studiedAt == null) {
+            null
+        } else {
+            val date = DateUtil.extractDateFromIso(studiedAt)
+            ResourceUtil.getString(R.string.course_passed, date ?: "")
+        }
+    }
+
+    private fun getProgressData(completionPercentage: Float?): Pair<Int, String> {
+        val percent = ((completionPercentage ?: 0f) * 100).toInt()
+        val barText = ResourceUtil.getString(R.string.course_percentage, percent)
+        return Pair(percent, barText)
+    }
+
+    private fun isCompulsory(rule: Rule?) = rule == Rule.COMPULSORY
+
+    private fun getImageBadgeText(courseSource: CourseSource?) =
+        if (courseSource == CourseSource.TENANT_COURSE) {
+            ResourceUtil.getString(R.string.course_type_tenant)
+        } else {
+            null
+        }
+
+    private fun getTitleBadgeText(rule: Rule?) = when (rule) {
+        Rule.COMPULSORY -> ResourceUtil.getString(R.string.course_rule_compulsory)
+        Rule.ELECTIVE -> ResourceUtil.getString(R.string.course_rule_elective)
+        else -> null
+    }
+
+    private fun getDeadlineText(dueAt: String?, studiedAt: String?): String? {
+        if (studiedAt != null) return null
         if (dueAt.isNullOrBlank()) return ResourceUtil.getString(R.string.course_no_expiry_date)
 
         val days = DateUtil.daysFromNow(dueAt)
