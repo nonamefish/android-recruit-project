@@ -1,0 +1,330 @@
+[
+    {
+        "__typename": "Course",
+        "id": "course01",
+        "title": "百萬 YouTuber 攻心剪輯術：後製技巧與 YouTube 經營心法",
+        "coverImageUrl": "https://i.imgur.com/pn31RDX.png",
+        "totalSeconds": 4108,
+        "enrollmentsCount": 22,
+        "averageRating": 5,
+        "level": "ADVANCED",
+        "completionStatus": "COMPLETED",
+        "completionPercentage": 0.92,
+        "source": "UNLIMITED_PRODUCT",
+        "studiedAt": "2022-02-23T10:34:04Z",
+        "enrolled": true,
+        "teacher": {
+            "__typename": "Teacher",
+            "name": "阿滴 都省瑞 Ray Du"
+        },
+        "recentStartedAssignment": null,
+        "lastViewedAt": "2024-05-15T10:15:46Z",
+        "accessExpiredReason": null
+    },
+    {
+        "__typename": "Course",
+        "id": "course02",
+        "title": "百萬 YouTuber 攻心剪輯術：剪輯基礎概念與實作",
+        "coverImageUrl": "https://imgur.com/466a4Vj.png",
+        "totalSeconds": 5863,
+        "enrollmentsCount": 14,
+        "averageRating": null,
+        "level": "INTERMEDIATE",
+        "completionStatus": "COMPLETED",
+        "completionPercentage": 0.86,
+        "source": "UNLIMITED_PRODUCT",
+        "studiedAt": "2022-12-19T08:43:57Z",
+        "enrolled": true,
+        "teacher": {
+            "__typename": "Teacher",
+            "name": "阿滴 都省瑞 Ray Du"
+        },
+        "recentStartedAssignment": {
+            "__typename": "V2Assignment",
+            "id": "m3rsmjW0lMpdmVzq8TUtY7zg1tubcmd4do31EBJk_ic",
+            "title": "Daisuke test 0714 01",
+            "assigners": [
+                {
+                    "__typename": "User",
+                    "id": "90608",
+                    "name": "Daisuke"
+                }
+            ],
+            "rule": "COMPULSORY",
+            "completedAt": "2022-12-19T08:43:57Z",
+            "timeline": {
+                "__typename": "AssignmentTimeline",
+                "startAt": null,
+                "dueAt": "2023-07-14T15:59:02Z"
+            }
+        },
+        "lastViewedAt": "2024-05-15T10:10:30Z",
+        "accessExpiredReason": null
+    },
+    {
+        "__typename": "Course",
+        "id": "course03",
+        "title": "用程式構築的繪畫世界 — CSS 繪圖",
+        "coverImageUrl": "https://imgur.com/msBVWbv.png",
+        "totalSeconds": 20617,
+        "enrollmentsCount": 7,
+        "averageRating": 5,
+        "level": "INTERMEDIATE",
+        "completionStatus": "STUDYING",
+        "completionPercentage": 0,
+        "source": "UNLIMITED_PRODUCT",
+        "studiedAt": null,
+        "enrolled": true,
+        "teacher": {
+            "__typename": "Teacher",
+            "name": "Cat Sun"
+        },
+        "recentStartedAssignment": {
+            "__typename": "V2Assignment",
+            "id": "m3rsmjW0lMpdmVzq8TUtYw9SZYLjwqlhhY6t8u3AyBc",
+            "title": "test_assignment_240502_01",
+            "assigners": [
+                {
+                    "__typename": "User",
+                    "id": "90608",
+                    "name": "Daisuke"
+                }
+            ],
+            "rule": "COMPULSORY",
+            "completedAt": null,
+            "timeline": {
+                "__typename": "AssignmentTimeline",
+                "startAt": null,
+                "dueAt": "2024-05-31T04:28:26Z"
+            }
+        },
+        "lastViewedAt": "2024-05-02T06:04:02Z",
+        "accessExpiredReason": null
+    },
+    {
+        "__typename": "Course",
+        "id": "course04",
+        "title": "CEPT-B2B跨境電商技能認證-前言",
+        "coverImageUrl": "https://imgur.com/AIFqs1I.png",
+        "totalSeconds": 1329,
+        "enrollmentsCount": 3,
+        "averageRating": null,
+        "level": "BEGINNER",
+        "completionStatus": "STUDYING",
+        "completionPercentage": 0,
+        "source": "UNLIMITED_PRODUCT",
+        "studiedAt": null,
+        "enrolled": true,
+        "teacher": {
+            "__typename": "Teacher",
+            "name": "賴順賢 Gary"
+        },
+        "recentStartedAssignment": {
+            "__typename": "V2Assignment",
+            "id": "m3rsmjW0lMpdmVzq8TUtY385Fzusbv3bnhKl21ESudw",
+            "title": "test_assignment_240516_01",
+            "assigners": [
+                {
+                    "__typename": "User",
+                    "id": "90608",
+                    "name": "Daisuke"
+                }
+            ],
+            "rule": "ELECTIVE",
+            "completedAt": null,
+            "timeline": {
+                "__typename": "AssignmentTimeline",
+                "startAt": null,
+                "dueAt": "2024-05-19T15:59:53Z"
+            }
+        },
+        "lastViewedAt": null,
+        "accessExpiredReason": null
+    },
+    {
+        "__typename": "Course",
+        "id": "course05",
+        "title": "使用 HTML、CSS 開發一個網站",
+        "coverImageUrl": "https://imgur.com/7LlswEL.png",
+        "totalSeconds": 55368,
+        "enrollmentsCount": 13,
+        "averageRating": null,
+        "level": "BEGINNER",
+        "completionStatus": "STUDYING",
+        "completionPercentage": 0.06,
+        "source": "UNLIMITED_PRODUCT",
+        "studiedAt": null,
+        "enrolled": true,
+        "teacher": {
+            "__typename": "Teacher",
+            "name": "六角學院"
+        },
+        "recentStartedAssignment": {
+            "__typename": "V2Assignment",
+            "id": "m3rsmjW0lMpdmVzq8TUtY385Fzusbv3bnhKl21ESudw",
+            "title": "test_assignment_240516_01",
+            "assigners": [
+                {
+                    "__typename": "User",
+                    "id": "90608",
+                    "name": "Daisuke"
+                }
+            ],
+            "rule": "ELECTIVE",
+            "completedAt": null,
+            "timeline": {
+                "__typename": "AssignmentTimeline",
+                "startAt": null,
+                "dueAt": "2024-06-19T15:59:53Z"
+            }
+        },
+        "lastViewedAt": "2024-04-30T10:10:57Z",
+        "accessExpiredReason": null
+    },
+    {
+        "__typename": "TenantCourse",
+        "id": "course06",
+        "title": "多形式單元 in 課程",
+        "coverImageUrl": "https://imgur.com/AIcmrtq.png",
+        "totalSeconds": 7255,
+        "enrollmentsCount": 11,
+        "averageRating": 4.5,
+        "level": null,
+        "completionStatus": "STUDYING",
+        "completionPercentage": 0.3,
+        "source": "TENANT_COURSE",
+        "studiedAt": null,
+        "enrolled": true,
+        "teacher": {
+            "__typename": "TenantTeacher",
+            "name": "river2-0308"
+        },
+        "recentStartedAssignment": {
+            "__typename": "V2Assignment",
+            "id": "m3rsmjW0lMpdmVzq8TUtY1FacZDd39ILxCwGau0UlgQ",
+            "title": "Daisuke test 0613 03",
+            "assigners": [
+                {
+                    "__typename": "User",
+                    "id": "90608",
+                    "name": "Daisuke"
+                }
+            ],
+            "rule": "COMPULSORY",
+            "completedAt": null,
+            "timeline": {
+                "__typename": "AssignmentTimeline",
+                "startAt": null,
+                "dueAt": "2024-05-24T16:00:14Z"
+            }
+        },
+        "lastViewedAt": "2024-04-22T07:41:42Z",
+        "accessExpiredReason": null
+    },
+    {
+        "__typename": "TenantCourse",
+        "id": "course07",
+        "title": "river test 0727-2",
+        "coverImageUrl": "https://imgur.com/qWIBoAE.png",
+        "totalSeconds": 8,
+        "enrollmentsCount": 2,
+        "averageRating": 4,
+        "level": null,
+        "completionStatus": "STUDYING",
+        "completionPercentage": 0,
+        "source": "TENANT_COURSE",
+        "studiedAt": null,
+        "enrolled": true,
+        "teacher": {
+            "__typename": "TenantTeacher",
+            "name": "River"
+        },
+        "recentStartedAssignment": {
+            "__typename": "V2Assignment",
+            "id": "m3rsmjW0lMpdmVzq8TUtYxAb8m0eXugTvG9TB-PDPrk",
+            "title": "test_assignment_240513_01",
+            "assigners": [
+                {
+                    "__typename": "User",
+                    "id": "90608",
+                    "name": "Daisuke"
+                }
+            ],
+            "rule": "COMPULSORY",
+            "completedAt": null,
+            "timeline": {
+                "__typename": "AssignmentTimeline",
+                "startAt": null,
+                "dueAt": "2024-05-20T09:08:10Z"
+            }
+        },
+        "lastViewedAt": null,
+        "accessExpiredReason": null
+    },
+    {
+        "__typename": "Course",
+        "id": "course08",
+        "title": "【不會畫圖】也能創作動態 LINE 貼圖",
+        "coverImageUrl": "https://imgur.com/myIJkmD.png",
+        "totalSeconds": 4956,
+        "enrollmentsCount": 4,
+        "averageRating": null,
+        "level": "BEGINNER",
+        "completionStatus": "STUDYING",
+        "completionPercentage": 0,
+        "source": "UNLIMITED_PRODUCT",
+        "studiedAt": null,
+        "enrolled": true,
+        "teacher": {
+            "__typename": "Teacher",
+            "name": "下村"
+        },
+        "recentStartedAssignment": null,
+        "lastViewedAt": "2024-04-22T07:41:48Z",
+        "accessExpiredReason": null
+    },
+    {
+        "__typename": "Course",
+        "id": "course09",
+        "title": "App Inventor 2｜進階實戰",
+        "coverImageUrl": "https://imgur.com/Tlg8Yiz.png",
+        "totalSeconds": 5135,
+        "enrollmentsCount": 3,
+        "averageRating": null,
+        "level": "INTERMEDIATE",
+        "completionStatus": "STUDYING",
+        "completionPercentage": 0,
+        "source": "UNLIMITED_PRODUCT",
+        "studiedAt": null,
+        "enrolled": true,
+        "teacher": {
+            "__typename": "Teacher",
+            "name": "Lien Ted"
+        },
+        "recentStartedAssignment": null,
+        "lastViewedAt": "2024-04-22T06:21:53Z",
+        "accessExpiredReason": null
+    },
+    {
+        "__typename": "Course",
+        "id": "course10",
+        "title": "不學 Coding 的邏輯思考，工程溝通更容易",
+        "coverImageUrl": "https://imgur.com/39CPpgH.png",
+        "totalSeconds": 5150,
+        "enrollmentsCount": 49,
+        "averageRating": 4,
+        "level": "BEGINNER",
+        "completionStatus": "STUDYING",
+        "completionPercentage": 0.65,
+        "source": "UNLIMITED_PRODUCT",
+        "studiedAt": null,
+        "enrolled": true,
+        "teacher": {
+            "__typename": "Teacher",
+            "name": "Henry Wu"
+        },
+        "recentStartedAssignment": null,
+        "lastViewedAt": "2024-04-16T02:14:50Z",
+        "accessExpiredReason": null
+    }
+]
