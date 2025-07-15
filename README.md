@@ -1,86 +1,31 @@
 
 請實作一個列表畫面的 APP，並寫文件或註解來解釋設計考量。除了指定需求外，可以自由設計 model 和 UI 來提供更好的體驗。
 
-## 技術規定
+## 專案技術與設計架構
 
-- Deployment Target 為 34。
-- 請使用 Kotlin 和 Compose（或是 XML）開發。
-- 可使用第三方 library。
-- 可使用 GitHub Packages 或任何第三方管理工具。
-- 請寫文件或註解來解釋你的設計考量。
+- **主要技術**：Kotlin、Jetpack Compose、Material 3
+- **架構模式**：採用 MVI（Model-View-Intent）架構，將 UI 狀態與事件明確分離，提升可維護性與可測試性
+- **響應式 UI**：
+    - 以 Compose 為基礎，所有畫面皆為響應式設計，UI 狀態由 ViewModel 驅動
+- **依賴注入**：使用 Koin 管理依賴，提升模組化與測試便利性
+- **UI 統一設計規格**：
+    - 所有顏色、字型等皆集中於 `ui/theme` 目錄統一管理，確保設計一致性
+    - Typography 與 Color 皆有自定義命名規則，方便維護與擴充
+- **深色主題支援**：
+    - 依據系統設定自動切換淺色/深色主題，所有元件皆支援深色模式
+- **可擴充性**：
+    - Data Loader 與 Repository 皆有抽象層，方便日後擴充資料來源
+- **測試覆蓋**：
+    - 專案包含單元測試，已撰寫測試範圍：
+        - CourseViewModel：驗證 UI 狀態、課程資料轉換、標籤與截止文案等顯示邏輯
+        - DefaultCourseRepository：驗證課程資料正確取得與 Repository 行為
+        - DateUtil：驗證日期格式轉換、天數計算等工具方法
+- **建構工具**：採用 Gradle Kotlin DSL（.kts）進行專案建構與依賴管理，語法更現代且易於維護
 
-## 需求
+## Development Environment
 
-請實作一個列表畫面的 APP，需求如下：
+**Android Studio** - Android Studio Meerkat | 2024.3.1 Patch 2
 
-#### 資料
+**Android SDK** - 21+
 
-- 請設計一個 Data Loader 的抽象層來提供課程資料。
-- 請用專案中提供的 JSON file 實作上述 Data Loader 的一個實例。
-
-    - courses.json
-
-- 課程型態分為「企業課程」與「訂閱課程」兩種，對應到數據中的 `source` ：
-    
-    - 「企業課程」→ `TENANT_COURSE`
-    - 「訂閱課程」→ `UNLIMITED_PRODUCT`
-
-#### UI 設計
-
-- 課程縮略圖
-    - 左上角課程型態 tag →「企業課程」的場合顯示
-    - 右下角訊息 tag
-        - `recentStartedAssignment` 有值時 → 取 `recentStartedAssignment.assigners` 第 1 項中的 `name` ，並顯示「${name} 指派」
-        - `lastViewedAt` 有值時用這個時間做計算並顯示「〇〇 天前觀看」
-        - 其餘的場合 → 不顯示 tag
-
-- 課程 title
-    - 行數至多 2 行
-    - `recentStartedAssignment` 有值時 → 取 `recentStartedAssignment.rule` 來決定 title 前面要顯示的 tag 內容
-        - 「必修」→ `COMPULSORY`
-        - 「選修」→ `ELECTIVE`
-
-- 通過文案
-    - `studiedAt` 有值時用這個時間做計算並顯示「yyyy-MM-dd 通過」
-    - 其餘的場合 → 不顯示
-
-- 期限文案
-    - `studiedAt` 有值時 → 不顯示，因為已經通過課程
-    - `recentStartedAssignment` 有值時
-        - 取 `recentStartedAssignment.timeline.dueAt` 以及當下的時間差來決定要顯示的內容，以下也提供了一些例子
-            - 8 日以上 → 「yyyy-MM-dd 截止」
-            - 1 日以上未滿 8 日 → 「截止日剩 〇〇 天」
-            - 未滿 1 日 → 「〇〇 天內截止」
-            - 0 日以下 → 「已逾期」
-
-            | dueAt                | now                  | 期待値           |
-            |----------------------|----------------------|---------------|
-            | 2022-04-01T00:00:00Z | 2022-04-01T00:00:00Z | 已逾期           |
-            | 2022-04-01T01:00:00Z | 2022-04-01T00:00:00Z | 1 天內截止        |
-            | 2022-04-02T00:00:00Z | 2022-04-01T00:00:00Z | 截止日剩 1 天      |
-            | 2022-04-02T01:00:00Z | 2022-04-01T00:00:00Z | 截止日剩 1 天      |
-            | 2022-04-03T00:00:00Z | 2022-04-01T00:00:00Z | 截止日剩 2 天      |
-            | 2022-04-03T01:00:00Z | 2022-04-01T00:00:00Z | 截止日剩 2 天      |
-            | 2022-04-08T00:00:00Z | 2022-04-01T00:00:00Z | 截止日剩 7 天      |
-            | 2022-04-08T01:00:00Z | 2022-04-01T00:00:00Z | 截止日剩 7 天      |
-            | 2022-04-09T00:00:00Z | 2022-04-01T00:00:00Z | 2022-04-09 截止 |
-
-        - 顯示內容的文字顏色
-            - 「必修」→ 紅色
-            - 「選修」→ 默認顏色
-    - 其餘的場合 → 顯示「無期限」，並且文字顏色為默認顏色
-
-- 右下角 more icon
-    - 顯示但可以不用實作點擊功能
-
-- 提示
-    - 不用在意卡片尺寸、顏色、間距等細節，請將重點放在如何排版。（你仍然可以盡量符合示意圖）
-
-- 示意圖
-
-    <img width="300" alt="CleanShot 2021-12-09 at 10 59 30@2x" src="https://github.com/hahow/android-recruit-project/assets/15129081/70ad7c8d-5298-4506-a7ab-1cfdf6fc9ed9">
-
-## 提交
-
-- 請下載或 fork Hahow Android Engineer 面試題目初始專案。
-- 請將成果上傳至 GitHub 並直接提供 repo 連結。
+**Gradle** - 8.11

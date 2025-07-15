@@ -8,7 +8,7 @@ import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.GlobalContext.startKoin
 import org.koin.ksp.generated.module
 
-class MyApplication : Application() {
+open class MyApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
