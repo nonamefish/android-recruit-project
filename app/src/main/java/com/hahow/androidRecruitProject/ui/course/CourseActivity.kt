@@ -52,8 +52,14 @@ class CourseActivity : ComponentActivity() {
                         .background(HahowColor.background)
                         .systemBarsPadding()
                 ) {
-                    items(uiState.courses) { course ->
-                        CourseItemScreen(course)
+                    items(
+                        items = uiState.courses,
+                        key = { course -> course.id }
+                    ) { course ->
+                        CourseItemScreen(
+                            course = course,
+                            onUiAction = courseViewModel::onUiAction
+                        )
                     }
                 }
             }

@@ -14,5 +14,5 @@
     <string name="course_deadline_days_left">截止日剩 %1$d 天</string>
     <string name="course_deadline_end">%1$s 截止</string>
     <string name="course_no_expiry_date">無期限</string>
-    <string name="course_percentage">%1$d%</string>
+    <string name="course_percentage">%1$d%%</string>
 </resources>

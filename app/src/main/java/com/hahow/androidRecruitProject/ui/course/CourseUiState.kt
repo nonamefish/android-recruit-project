@@ -20,7 +20,7 @@ data class CourseUiItem(
     val imageBadgeText: String?,
     val imageTagType: TagType?,
     val imageTagText: String?,
-    val titleBadgeText: String?
+    val titleBadgeText: String?,
 )
 
 

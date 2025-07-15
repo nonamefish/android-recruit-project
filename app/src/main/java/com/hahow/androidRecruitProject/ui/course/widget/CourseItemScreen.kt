@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -44,6 +45,7 @@ import androidx.compose.ui.unit.sp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
 import com.hahow.androidRecruitProject.R
+import com.hahow.androidRecruitProject.ui.course.CourseUiAction
 import com.hahow.androidRecruitProject.ui.course.CourseUiItem
 import com.hahow.androidRecruitProject.ui.course.TagType
 import com.hahow.androidRecruitProject.ui.theme.HahowColor
@@ -53,10 +55,13 @@ import com.hahow.androidRecruitProject.ui.theme.HahowTypography
 @Composable
 fun CourseItemScreen(
     course: CourseUiItem,
+    onUiAction: (action: CourseUiAction) -> Unit,
     modifier: Modifier = Modifier
 ) {
     Row(
-        modifier = Modifier.padding(12.dp)
+        modifier = Modifier
+            .padding(12.dp)
+            .clickable { onUiAction(CourseUiAction.NavigateToCourse(course.id)) }
     ) {
         Box {
             Card(
@@ -126,11 +131,8 @@ fun CourseItemScreen(
                     )
                 }
 
-                Image(
-                    painter = painterResource(id = R.drawable.ic_more),
-                    contentDescription = stringResource(id = R.string.course_more_icon_desc),
-                    colorFilter = ColorFilter.tint(HahowColor.hahow_gray_500),
-                    modifier = Modifier.size(20.dp)
+                ImageMore(
+                    onClick = { onUiAction(CourseUiAction.OnClickMore(course.id)) }
                 )
             }
         }
@@ -350,6 +352,18 @@ private fun CourseProgressBar(
     }
 }
 
+@Composable
+fun ImageMore(onClick: () -> Unit) {
+    Image(
+        painter = painterResource(id = R.drawable.ic_more),
+        contentDescription = stringResource(id = R.string.course_more_icon_desc),
+        colorFilter = ColorFilter.tint(HahowColor.hahow_gray_500),
+        modifier = Modifier
+            .size(20.dp)
+            .clickable { onClick() },
+    )
+}
+
 
 @Preview(showBackground = true, name = "Normal - Light")
 @Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES, name = "Normal - Dark")
@@ -369,7 +383,7 @@ fun PreviewCompulsoryCourse() {
         imageTagText = "Daisuke 指派",
         titleBadgeText = "必修"
     )
-    CourseItemScreen(sampleCourse)
+    CourseItemScreen(sampleCourse, {})
 }
 
 @Preview(showBackground = true, name = "Normal - Light")
@@ -390,7 +404,7 @@ fun PreviewElectiveCourse() {
         imageTagText = "Daisuke 指派",
         titleBadgeText = "推薦"
     )
-    CourseItemScreen(sampleCourse)
+    CourseItemScreen(sampleCourse, {})
 }
 
 @Preview(showBackground = true, name = "Normal - Light")
@@ -409,7 +423,7 @@ fun PreviewNormalCourse() {
         imageBadgeText = null,
         imageTagType = TagType.LastViewed,
         imageTagText = "3 天前觀看",
-        titleBadgeText = null
+        titleBadgeText = null,
     )
-    CourseItemScreen(sampleCourse)
+    CourseItemScreen(sampleCourse, {})
 }
