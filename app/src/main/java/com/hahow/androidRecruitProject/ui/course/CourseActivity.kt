@@ -32,7 +32,11 @@ class CourseActivity : ComponentActivity() {
                 modifier = Modifier,
                 viewModel = courseViewModel,
                 onEventCollect = {
-
+                    when (it) {
+                        is CourseViewModel.CourseEvent.NavigateToCourse -> {
+                            // TODO: Handle navigation to course details
+                        }
+                    }
                 }
             ) {
                 val uiState by courseViewModel.uiState.collectAsStateWithLifecycle()

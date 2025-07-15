@@ -5,6 +5,7 @@ import com.hahow.androidRecruitProject.R
 import com.hahow.androidRecruitProject.data.repository.DefaultCourseRepository
 import com.hahow.androidRecruitProject.domain.model.assignment.Assigner
 import com.hahow.androidRecruitProject.domain.model.assignment.Rule
+import com.hahow.androidRecruitProject.domain.model.course.Course
 import com.hahow.androidRecruitProject.domain.model.course.CourseSource
 import com.hahow.androidRecruitProject.ui.base.BaseViewModel
 import com.hahow.androidRecruitProject.util.DateUtil
@@ -15,18 +16,33 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlin.math.abs
-import kotlin.ranges.contains
 
 class CourseViewModel(
     private val repo: DefaultCourseRepository,
 ) : BaseViewModel() {
 
+    private val courses = mutableListOf<Course>()
+
     private val _uiState = MutableStateFlow(CourseUiState(loadingState = LoadingState.Idle))
     val uiState: StateFlow<CourseUiState> = _uiState.asStateFlow()
+
+    sealed class CourseEvent : BaseEvent() {
+        data class NavigateToCourse(val course: Course) : CourseEvent()
+    }
 
     fun onUiAction(action: CourseUiAction) {
         when (action) {
             CourseUiAction.OnCreate -> getCourses()
+            is CourseUiAction.OnClickMore -> {
+                // TODO: implement the logic to handle "more" click
+                sendEvent(Event.ShowToast("Clicked more for course ID: ${action.courseId}"))
+            }
+            is CourseUiAction.NavigateToCourse -> {
+                val course = courses.find { it.id == action.courseId }
+                sendEvent(CourseEvent.NavigateToCourse(course ?: return))
+
+                openDialog("Navigating to course: ${course.title}")
+            }
         }
     }
 
@@ -35,7 +51,9 @@ class CourseViewModel(
         _uiState.update { it.copy(loadingState = LoadingState.Loading) }
 
         viewModelScope.launch {
-            val courses = repo.getCourses()
+            courses.clear()
+            courses.addAll(repo.getCourses())
+
             val uiItems = courses.map { course ->
 
                 val dueAt = course.recentStartedAssignment?.timeline?.dueAt
@@ -49,8 +67,8 @@ class CourseViewModel(
                     title = course.title,
                     coverImageUrl = course.coverImageUrl,
                     progressPercent = percent,
-                    progressBarText = progressBarText,
                     studiedDateText = getStudiedDateText(course.studiedAt),
+                    progressBarText = progressBarText,
                     deadlineText = getDeadlineText(dueAt, course.studiedAt),
                     isCompulsory = isCompulsory(course.recentStartedAssignment?.rule),
                     imageBadgeText = getImageBadgeText(course.source),

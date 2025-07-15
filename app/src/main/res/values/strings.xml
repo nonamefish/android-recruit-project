@@ -15,4 +15,5 @@
     <string name="course_deadline_end">%1$s 截止</string>
     <string name="course_no_expiry_date">無期限</string>
     <string name="course_percentage">%1$d%%</string>
+    <string name="confirm">確定</string>
 </resources>
